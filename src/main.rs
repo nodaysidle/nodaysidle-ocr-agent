@@ -1,9 +1,9 @@
 use clap::Parser;
 use colored::*;
-use way_ocr_agent::capture::ScreenCapture;
-use way_ocr_agent::dispatch::{DispatchTarget, Dispatcher};
-use way_ocr_agent::formatter::CodeFormatter;
-use way_ocr_agent::ocr::OcrEngine;
+use nodaysidle_ocr_agent::capture::ScreenCapture;
+use nodaysidle_ocr_agent::dispatch::{DispatchTarget, Dispatcher};
+use nodaysidle_ocr_agent::formatter::CodeFormatter;
+use nodaysidle_ocr_agent::ocr::OcrEngine;
 
 #[derive(Parser)]
 #[command(name = "way-ocr-agent")]
@@ -55,7 +55,7 @@ async fn main() {
 
     // 3. Format text / reconstruct code fences
     let (formatted_text, _) = if cli.raw {
-        (raw_text.clone(), way_ocr_agent::formatter::ContentKind::Prose)
+        (raw_text.clone(), nodaysidle_ocr_agent::formatter::ContentKind::Prose)
     } else {
         CodeFormatter::format(&raw_text)
     };

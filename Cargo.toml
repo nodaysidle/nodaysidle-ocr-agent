@@ -1,5 +1,5 @@
 [package]
-name = "way-ocr-agent"
+name = "nodaysidle-ocr-agent"
 version = "0.1.0"
 edition = "2021"
 authors = ["nodaysidle <team@nodaysidle.org>"]

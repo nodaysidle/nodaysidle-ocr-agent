@@ -1,4 +1,4 @@
-use way_ocr_agent::formatter::{CodeFormatter, ContentKind};
+use nodaysidle_ocr_agent::formatter::{CodeFormatter, ContentKind};
 
 #[test]
 fn test_detect_rust_code() {
