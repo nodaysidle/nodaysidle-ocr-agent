@@ -19,9 +19,9 @@ struct Cli {
     #[arg(long)]
     raw: bool,
 
-    /// Copy to clipboard only; skip auto-injection into active agent pane
-    #[arg(long)]
-    no_inject: bool,
+    /// Automatically inject formatted text into active agent pane (Herdr/Tmux) instead of clipboard only
+    #[arg(short, long)]
+    inject: bool,
 
     /// Print extracted markdown to stdout
     #[arg(short, long)]
@@ -67,15 +67,17 @@ async fn main() {
         eprintln!("{} Failed to copy to clipboard: {}", "warning:".yellow(), e);
     }
 
-    // 5. Probe for agent target and inject if enabled
-    let target = if cli.no_inject {
-        DispatchTarget::ClipboardOnly
-    } else {
+    // 5. Probe for agent target and inject ONLY if explicitly requested with --inject
+    let target = if cli.inject {
         Dispatcher::detect_agent_target().await
+    } else {
+        DispatchTarget::ClipboardOnly
     };
 
-    if let Err(e) = Dispatcher::inject_to_agent(&target, &formatted_text).await {
-        eprintln!("{} Failed to inject to agent: {}", "warning:".yellow(), e);
+    if cli.inject {
+        if let Err(e) = Dispatcher::inject_to_agent(&target, &formatted_text).await {
+            eprintln!("{} Failed to inject to agent: {}", "warning:".yellow(), e);
+        }
     }
 
     // 6. Notify user

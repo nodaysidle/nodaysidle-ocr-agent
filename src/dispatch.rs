@@ -139,7 +139,7 @@ impl Dispatcher {
                 format!("{} words captured -> Copied to clipboard & injected to {}", word_count, agent)
             }
             DispatchTarget::ClipboardOnly => {
-                format!("{} words captured -> Copied to clipboard", word_count)
+                format!("{} words captured -> Copied to clipboard (ready to paste)", word_count)
             }
         };
 
