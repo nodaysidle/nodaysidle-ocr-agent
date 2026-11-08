@@ -1,4 +1,8 @@
 /target
+/dist
+**/*.rs.bk
+*.log
+.DS_Store
 
 # === AI Coding Agent Security & Command Cache Guardrails ===
 .claude/

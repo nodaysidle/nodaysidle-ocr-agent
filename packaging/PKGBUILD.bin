@@ -1,0 +1,25 @@
+# Maintainer: nodaysidle <team@nodaysidle.org>
+pkgname=nodaysidle-ocr-agent-bin
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Fast Wayland screen-region OCR and code context injector for AI coding agents and Herdr (precompiled binary)'
+arch=('x86_64')
+url='https://github.com/nodaysidle/nodaysidle-ocr-agent'
+license=('MIT')
+depends=('gcc-libs' 'glibc' 'grim' 'slurp' 'hyprpicker' 'tesseract' 'wl-clipboard')
+optdepends=(
+  'herdr: terminal workspace manager for AI coding agents'
+  'tmux: terminal multiplexer'
+  'tesseract-data-eng: English OCR language data'
+)
+provides=('nodaysidle-ocr-agent' 'way-ocr-agent')
+conflicts=('nodaysidle-ocr-agent')
+source=("$pkgname-$pkgver.tar.gz::$url/releases/download/v$pkgver/nodaysidle-ocr-agent-v$pkgver-x86_64-unknown-linux-gnu.tar.gz")
+sha256sums=('f4ecf25408e02885771f33e7ecc6658cdf9995c7be94644156b39104168da3ae')
+
+package() {
+  install -Dm755 "$srcdir/nodaysidle-ocr-agent" "$pkgdir/usr/bin/nodaysidle-ocr-agent"
+  ln -sfn "/usr/bin/nodaysidle-ocr-agent" "$pkgdir/usr/bin/way-ocr-agent"
+  install -Dm644 "$srcdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 "$srcdir/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+}

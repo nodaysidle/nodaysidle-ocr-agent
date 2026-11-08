@@ -1,0 +1,46 @@
+# Maintainer: nodaysidle <team@nodaysidle.org>
+pkgname=nodaysidle-ocr-agent
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Fast Wayland screen-region OCR and code context injector for AI coding agents and Herdr'
+arch=('x86_64')
+url='https://github.com/nodaysidle/nodaysidle-ocr-agent'
+license=('MIT')
+depends=('gcc-libs' 'glibc' 'grim' 'slurp' 'hyprpicker' 'tesseract' 'wl-clipboard')
+makedepends=('cargo' 'rust')
+optdepends=(
+  'herdr: terminal workspace manager for AI coding agents'
+  'tmux: terminal multiplexer'
+  'tesseract-data-eng: English OCR language data'
+)
+provides=('nodaysidle-ocr-agent' 'way-ocr-agent')
+conflicts=('nodaysidle-ocr-agent-bin')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  export CARGO_TARGET_DIR=target
+  cargo build --frozen --release --all-targets
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo test --frozen
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -Dm755 "target/release/nodaysidle-ocr-agent" "$pkgdir/usr/bin/nodaysidle-ocr-agent"
+  ln -sfn "/usr/bin/nodaysidle-ocr-agent" "$pkgdir/usr/bin/way-ocr-agent"
+  install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 "README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+}
