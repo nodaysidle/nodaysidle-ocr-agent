@@ -1,0 +1,19 @@
+/target
+
+# === AI Coding Agent Security & Command Cache Guardrails ===
+.claude/
+.claude.json
+.claude_settings.json
+.approved-commands
+*.approved-commands*
+.gemini/
+.agent/
+.codex/
+.hermes/
+.opencode/
+transcript.jsonl
+transcript_full.jsonl
+*.aacpcap
+.env
+.env.local
+.env.*.local
