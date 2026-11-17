@@ -17,7 +17,7 @@ optdepends=(
 provides=('nodaysidle-ocr-agent' 'way-ocr-agent')
 conflicts=('nodaysidle-ocr-agent-bin')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('95c3b208fb96c4aac6329cc5679b6d061461bec77c3345e83b4cb2cf7ea8eb1a')
 
 prepare() {
   cd "$pkgname-$pkgver"
