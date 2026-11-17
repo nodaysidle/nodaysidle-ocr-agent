@@ -56,7 +56,7 @@ sudo pacman -S --needed grim slurp hyprpicker tesseract tesseract-data-eng wl-cl
 
 #### 2. Download and Install the Binary
 ```bash
-curl -fsSL https://github.com/nodaysidle/nodaysidle-ocr-agent/releases/download/v0.1.0/nodaysidle-ocr-agent-v0.1.0-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C ~/.local/bin/ nodaysidle-ocr-agent way-ocr-agent
+curl -fsSL https://github.com/nodaysidle/nodaysidle-ocr-agent/releases/download/v0.1.1/nodaysidle-ocr-agent-v0.1.1-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C ~/.local/bin/ nodaysidle-ocr-agent way-ocr-agent
 chmod +x ~/.local/bin/nodaysidle-ocr-agent ~/.local/bin/way-ocr-agent
 ```
 
