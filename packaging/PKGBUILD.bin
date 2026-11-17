@@ -1,6 +1,6 @@
 # Maintainer: nodaysidle <team@nodaysidle.org>
 pkgname=nodaysidle-ocr-agent-bin
-pkgver=0.1.1
+pkgver=0.2.0
 pkgrel=1
 pkgdesc='Fast Wayland screen-region OCR and code context injector for AI coding agents and Herdr (precompiled binary)'
 arch=('x86_64')

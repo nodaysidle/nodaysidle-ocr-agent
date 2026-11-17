@@ -11,7 +11,15 @@ impl CodeFormatter {
     pub fn format(raw_text: &str) -> (String, ContentKind) {
         let cleaned = Self::clean_whitespace(raw_text);
         let kind = Self::detect_kind(&cleaned);
+        Self::format_cleaned(&cleaned, kind)
+    }
 
+    pub fn format_with_kind(raw_text: &str, kind: ContentKind) -> (String, ContentKind) {
+        let cleaned = Self::clean_whitespace(raw_text);
+        Self::format_cleaned(&cleaned, kind)
+    }
+
+    fn format_cleaned(cleaned: &str, kind: ContentKind) -> (String, ContentKind) {
         match &kind {
             ContentKind::Code(lang) => {
                 let formatted = format!(
@@ -31,7 +39,7 @@ impl CodeFormatter {
                 );
                 (formatted, kind)
             }
-            ContentKind::Prose => (cleaned, kind),
+            ContentKind::Prose => (cleaned.to_string(), kind),
         }
     }
 

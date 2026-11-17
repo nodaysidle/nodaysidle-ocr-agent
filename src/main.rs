@@ -4,6 +4,7 @@ use nodaysidle_ocr_agent::capture::ScreenCapture;
 use nodaysidle_ocr_agent::dispatch::{Dispatcher, InjectOutcome};
 use nodaysidle_ocr_agent::error::OcrError;
 use nodaysidle_ocr_agent::formatter::CodeFormatter;
+use nodaysidle_ocr_agent::liquid::classify_with_liquid;
 use nodaysidle_ocr_agent::ocr::OcrEngine;
 
 fn default_lang() -> String {
@@ -32,6 +33,10 @@ struct Cli {
     /// Print extracted markdown to stdout
     #[arg(short, long)]
     stdout: bool,
+
+    /// Skip Liquid d1.2 classification even when LIQUID_API_KEY is set
+    #[arg(long)]
+    no_ai: bool,
 }
 
 fn acquire_instance_lock() -> Option<std::fs::File> {
@@ -87,12 +92,28 @@ async fn main() {
         }
     };
 
-    // 3. Format text / reconstruct code fences
+    // 3. Format text / reconstruct code fences (uses Liquid d1.2 if LIQUID_API_KEY is set, else local heuristics)
     let (formatted_text, _) = if cli.raw {
         (
             raw_text.clone(),
             nodaysidle_ocr_agent::formatter::ContentKind::Prose,
         )
+    } else if !cli.no_ai {
+        if let Ok(api_key) = std::env::var("LIQUID_API_KEY") {
+            if let Some(res) = classify_with_liquid(&raw_text, &api_key).await {
+                if res.contains_secret {
+                    eprintln!(
+                        "{} possible secret or API key detected in OCR capture",
+                        "warning:".yellow()
+                    );
+                }
+                CodeFormatter::format_with_kind(&raw_text, res.kind)
+            } else {
+                CodeFormatter::format(&raw_text)
+            }
+        } else {
+            CodeFormatter::format(&raw_text)
+        }
     } else {
         CodeFormatter::format(&raw_text)
     };

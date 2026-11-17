@@ -1,6 +1,6 @@
 [package]
 name = "nodaysidle-ocr-agent"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 authors = ["nodaysidle <team@nodaysidle.org>"]
 description = "Fast Wayland Screen-Region OCR and Code Context Injector for AI coding agents and Herdr"
