@@ -1,4 +1,4 @@
-# CLAUDE.md for way-ocr-agent
+# CLAUDE.md for nodaysidle-ocr-agent (binary: way-ocr-agent)
 
 ## Overview
 Fast Wayland screen-region OCR and markdown code context injector for coding agents.
@@ -7,7 +7,7 @@ Fast Wayland screen-region OCR and markdown code context injector for coding age
 - Build: `cargo build`
 - Release Build: `cargo build --release`
 - Tests: `cargo test`
-- Install: `cargo build --release && cp target/release/way-ocr-agent ~/.local/bin/`
+- Install: `cargo build --release && cp target/release/nodaysidle-ocr-agent ~/.local/bin/ && ln -sf nodaysidle-ocr-agent ~/.local/bin/way-ocr-agent`
 
 ## Coding Standards
 - Rust 2021 edition.

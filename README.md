@@ -17,7 +17,7 @@ Sending full-screen image captures to an LLM wastes thousands of vision tokens, 
 `nodaysidle-ocr-agent` solves this with a lightweight Wayland pipeline:
 1. Press `SUPER + SHIFT + O` on any workspace.
 2. Drag a crosshair box across any screen region.
-3. The pixels are captured in RAM and processed locally via OCR in under 40 milliseconds.
+3. The pixels are captured in RAM and processed locally via OCR (~250 ms for typical code regions).
 4. Code structures and compiler diagnostics are automatically detected, normalized, and wrapped in clean Markdown code fences (` ```rust `, ` ```python `, ` ```bash `).
 5. The formatted text is placed directly onto your Wayland clipboard (`wl-copy`), ready to paste anywhere with `Ctrl+V`.
 
@@ -44,7 +44,7 @@ sequenceDiagram
     Compositor-->>Core: Raw PNG bytes (RAM buffer)
     Core->>Engine: Pipe image bytes via stdin
     Engine-->>Core: Extracted UTF-8 raw text
-    Core->>Formatter: Analyze syntax & indentation
+    Core->>Formatter: Analyze syntax & whitespace
     Formatter-->>Core: Formatted Markdown code fence
     Core->>Output: wl-copy (Wayland clipboard)
     opt When --inject is set
@@ -61,10 +61,9 @@ sequenceDiagram
 - **Smart Syntax Reconstruction:**
   - **Language Detection:** Recognizes syntax patterns for Rust, Python, TypeScript/JavaScript, Bash/Shell, JSON, and TOML.
   - **Compiler Diagnostic Detection:** Identifies Rust `error[E...]` diagnostics, Python tracebacks, and panic dumps, wrapping them in formatted diagnostic blocks.
-  - **Whitespace & Indentation Normalization:** Cleans up OCR artifacts, preserves indentation depth, and trims trailing line noise.
+  - **Whitespace Normalization:** Cleans up OCR artifacts and trims trailing line noise.
 - **Clipboard-First Safety:** Puts clean Markdown directly into `wl-copy`. It will never auto-paste into your active terminal unless explicitly requested.
 - **Optional Direct Agent Dispatch (`--inject`):** Can probe running terminal multiplexers ([Herdr](https://github.com/nodaysidle/herdr) or [Tmux](https://github.com/tmux/tmux)) and dispatch context into the active agent pane without shifting desktop workspaces or losing focus.
-- **Zero Key Conflicts:** Designed specifically for Hyprland on Arch / Omarchy Linux, bound cleanly to `SUPER + SHIFT + O` without conflicting with system keys.
 
 ---
 
@@ -87,7 +86,7 @@ git clone https://github.com/nodaysidle/nodaysidle-ocr-agent.git
 cd nodaysidle-ocr-agent
 cargo build --release
 cp target/release/nodaysidle-ocr-agent ~/.local/bin/
-cp target/release/way-ocr-agent ~/.local/bin/
+ln -sf nodaysidle-ocr-agent ~/.local/bin/way-ocr-agent
 ```
 
 Verify the installation:
@@ -100,12 +99,17 @@ nodaysidle-ocr-agent --help
 
 ## Compositor Configuration (Hyprland)
 
-Add the following binding to your `~/.config/hypr/bindings.lua` (or `hyprland.conf`):
+Add the following binding to your `~/.config/hypr/bindings.lua` (or `hyprland.conf`). On Omarchy, `SUPER + SHIFT + O` is bound to Obsidian by default, so unbind it first (or choose another key):
 
 ```lua
 -- Wayland Fast Screen-Region OCR and Code Context Injector for AI coding agents
+hl.unbind("SUPER + SHIFT + O")
 o.bind("SUPER + SHIFT + O", "Agent OCR Context Injector", "/home/arch/.local/bin/nodaysidle-ocr-agent")
 ```
+
+### vs `omarchy-capture-text`
+
+Omarchy 4.5 ships `omarchy-capture-text` (`SUPER + CTRL + PRINT`), which runs a similar `hyprpicker` -> `slurp` -> `grim` -> `tesseract` -> `wl-copy` pipeline and reads `OMARCHY_OCR_LANGS`. `nodaysidle-ocr-agent` adds automatic Markdown code/diagnostic fencing and optional `--inject` into focused Herdr/Tmux agent panes.
 
 Reload Hyprland:
 

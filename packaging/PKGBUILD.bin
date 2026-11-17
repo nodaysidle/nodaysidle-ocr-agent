@@ -1,21 +1,22 @@
 # Maintainer: nodaysidle <team@nodaysidle.org>
 pkgname=nodaysidle-ocr-agent-bin
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc='Fast Wayland screen-region OCR and code context injector for AI coding agents and Herdr (precompiled binary)'
 arch=('x86_64')
 url='https://github.com/nodaysidle/nodaysidle-ocr-agent'
 license=('MIT')
-depends=('gcc-libs' 'glibc' 'grim' 'slurp' 'hyprpicker' 'tesseract' 'wl-clipboard')
+depends=('gcc-libs' 'glibc' 'grim' 'slurp' 'tesseract' 'tesseract-data-eng' 'wl-clipboard')
 optdepends=(
   'herdr: terminal workspace manager for AI coding agents'
   'tmux: terminal multiplexer'
-  'tesseract-data-eng: English OCR language data'
+  'hyprpicker: freeze screen during region selection'
+  'tesseract-data-slv: Slovenian OCR language data'
 )
 provides=('nodaysidle-ocr-agent' 'way-ocr-agent')
 conflicts=('nodaysidle-ocr-agent')
-source=("$pkgname-$pkgver.tar.gz::$url/releases/download/v$pkgver/nodaysidle-ocr-agent-v$pkgver-x86_64-unknown-linux-gnu.tar.gz")
-sha256sums=('f4ecf25408e02885771f33e7ecc6658cdf9995c7be94644156b39104168da3ae')
+source=("$pkgname-$pkgver.tar.gz::$url/releases/download/v$pkgver/nodaysidle-ocr-agent-v$pkgver-$CARCH-unknown-linux-gnu.tar.gz")
+sha256sums=('f8529e0e5bf810513229605a0de7194993853d5357b23c1b3568bf97160d1795')
 
 package() {
   install -Dm755 "$srcdir/nodaysidle-ocr-agent" "$pkgdir/usr/bin/nodaysidle-ocr-agent"

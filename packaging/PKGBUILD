@@ -1,17 +1,18 @@
 # Maintainer: nodaysidle <team@nodaysidle.org>
 pkgname=nodaysidle-ocr-agent
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc='Fast Wayland screen-region OCR and code context injector for AI coding agents and Herdr'
 arch=('x86_64')
 url='https://github.com/nodaysidle/nodaysidle-ocr-agent'
 license=('MIT')
-depends=('gcc-libs' 'glibc' 'grim' 'slurp' 'hyprpicker' 'tesseract' 'wl-clipboard')
+depends=('gcc-libs' 'glibc' 'grim' 'slurp' 'tesseract' 'tesseract-data-eng' 'wl-clipboard')
 makedepends=('cargo' 'rust')
 optdepends=(
   'herdr: terminal workspace manager for AI coding agents'
+  'hyprpicker: freeze screen during region selection'
   'tmux: terminal multiplexer'
-  'tesseract-data-eng: English OCR language data'
+  'tesseract-data-slv: Slovenian OCR language data'
 )
 provides=('nodaysidle-ocr-agent' 'way-ocr-agent')
 conflicts=('nodaysidle-ocr-agent-bin')
